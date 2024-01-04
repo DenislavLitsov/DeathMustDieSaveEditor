@@ -13,11 +13,16 @@ namespace DeathMustDieGameCheat
         const string fileLoc = "C:\\Users\\denis\\AppData\\LocalLow\\Realm Archive\\Death Must Die\\Saves\\Slot_0.sav";
         static void Main(string[] args)
         {
-            FileManager fileManager = new FileManager();
-            var path = fileManager.GetSavePathIfExists();
+            DataManager dataManager = new DataManager();
+            dataManager.TryLoadSaveAlone();
 
-            fileManager.BackUpSave(path);
+            Console.WriteLine(dataManager.GetGold());
+            dataManager.SetGold(99999);
+            Console.WriteLine(dataManager.GetGold());
 
+            dataManager.SaveChanges();
+
+            //dataManager.
             //LoadSave();
             //SaveSave();
             //var file = ReadFileAsync("E:\\Games\\Steam\\steamapps\\common\\Death Must Die\\Death Must Die_Data\\resources.assets");

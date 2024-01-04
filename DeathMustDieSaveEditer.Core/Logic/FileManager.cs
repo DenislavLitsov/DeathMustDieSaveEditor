@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.IO.Compression;
 using System.Text;
+using System.Text.Json;
 
 namespace DeathMustDieSaveEditor.Core.Logic
 {
@@ -40,7 +41,7 @@ namespace DeathMustDieSaveEditor.Core.Logic
             return string.Empty;
         }
 
-        public void BackUpSave(string savePath)
+        private void BackUpSave(string savePath)
         {
             string fileName = Path.GetFileName(savePath);
             string directory = savePath.Replace(fileName, "");
@@ -103,15 +104,17 @@ namespace DeathMustDieSaveEditor.Core.Logic
             using (DeflateStream gzip = new DeflateStream(output, CompressionMode.Compress))
             {
                 using StreamWriter writer = new StreamWriter(gzip, Encoding.UTF8);
-                writer.WriteAsync(content);
+                writer.Write(content);
             }
             return output.ToArray();
         }
 
         private void WriteFile(string filePath, byte[] fileData)
         {
-            using FileStream fileStream = File.OpenWrite(filePath);
-            fileStream.WriteAsync(fileData, 0, fileData.Length);
+            using (FileStream fileStream = File.OpenWrite(filePath))
+            {
+                fileStream.Write(fileData, 0, fileData.Length);
+            }
         }
     }
 }

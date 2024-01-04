@@ -4,8 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Death Must Die Save Editor" Height="589" Width="1062">
+        Title="Death Must Die Save Editor" Height="720" Width="1280">
     <Grid>
+        <Label x:Name="LoadedFileNameLabel" Content="No default save file found. Please Select a save file with the button" HorizontalAlignment="Left" Margin="119,7,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="LoadCustomSaveFileButton" Content="Load custom save" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="104" Click="LoadCustomSaveFileButton_Click"/>
+        <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="44" Click="SaveButton_Click"/>
+        <Button x:Name="DonateButton" Content="Donate" HorizontalAlignment="Right" Margin="0,0,59,10" VerticalAlignment="Bottom" Width="60" Click="DonateButton_Click"/>
+        <TextBox x:Name="GoldTextBox" HorizontalAlignment="Left" Margin="40,0,0,10" TextWrapping="Wrap" Text="0" VerticalAlignment="Bottom" Width="100" PreviewTextInput="NumberValidationTextBox" TextChanged="GoldTextBox_TextChanged" />
+        <Label Content="Gold" HorizontalAlignment="Left" Margin="0,0,0,6" VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>

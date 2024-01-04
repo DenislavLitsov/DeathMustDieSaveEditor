@@ -12,19 +12,23 @@ namespace DeathMustDieSaveEditor.Core.Logic
         {
         }
 
-        public bool TryLoadSaveAlone()
+        /// <summary>
+        /// Return File Path
+        /// </summary>
+        /// <returns></returns>
+        public string TryLoadSaveAlone()
         {
             FileManager fileManager = new FileManager();
             string savePath = fileManager.GetSavePathIfExists();
 
             if (savePath == null || savePath == string.Empty)
-                return false;
+                return string.Empty;
 
             this.SavePath = savePath;
             string json = fileManager.LoadData(savePath);
             this.ParseJsonToSaveStructure(json);
 
-            return true;
+            return savePath;
         }
 
         public void LoadSave(string savePath)
@@ -37,7 +41,16 @@ namespace DeathMustDieSaveEditor.Core.Logic
 
         public void SaveChanges()
         {
-            throw new NotImplementedException();
+            var jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(this.SaveData);
+
+            FileManager fileManager = new FileManager();
+            fileManager.SaveData(this.SavePath, jsonData);
+        }
+
+        public int GetGold()
+        {
+            var progression = this.SaveData.serializedSaveData.GetProgression();
+            return progression.Gold;
         }
 
         public void SetGold(int newValue)
@@ -51,10 +64,15 @@ namespace DeathMustDieSaveEditor.Core.Logic
         {
             var progression = this.SaveData.serializedSaveData.GetProgression();
             var heroNames = progression.InventoryData
-                .Select(x=>x.CharacterCode)
+                .Select(x => x.CharacterCode)
                 .ToList();
 
             return heroNames;
+        }
+
+        public void UnlockHero()
+        {
+            throw new NotImplementedException();
         }
 
         private void ParseJsonToSaveStructure(string jsonData)
