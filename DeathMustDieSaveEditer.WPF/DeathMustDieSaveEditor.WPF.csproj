@@ -10,7 +10,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Avoron.png" />
+    <None Remove="ItemSelection.png" />
+    <None Remove="Kront.png" />
+    <None Remove="Nixi.png" />
+    <None Remove="Skadi.png" />
+    <None Remove="Witch.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DeathMustDieSaveEditer.Core\DeathMustDieSaveEditor.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Assets\Avoron.png" />
+    <Resource Include="Resources\Assets\ItemSelection.png" />
+    <Resource Include="Resources\Assets\Kront.png" />
+    <Resource Include="Resources\Assets\Nixi.png" />
+    <Resource Include="Resources\Assets\Skadi.png" />
+    <Resource Include="Resources\Assets\Witch.png" />
   </ItemGroup>
 
 </Project>

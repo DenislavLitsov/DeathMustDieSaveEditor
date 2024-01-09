@@ -1,4 +1,5 @@
 ﻿using DeathMustDieSaveEditor.Core.Logic;
+using DeathMustDieSaveEditor.Core.Models.SaveStructure;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -21,12 +22,25 @@ namespace DeathMustDieSaveEditor.WPF
     {
         private DataManager DataManager = new DataManager();
 
-        private bool AreComponenteLoaded = false;
+        private bool AreComponentsLoaded = false;
+
+        private string[] HeroNames = ["Avoron", "Kront", "Merris", "Nixi", "Skadi"];
+
+        private string SelectedClass = "Knight";
+
+        private bool IsHeroUnlocked = false;
+
+        private List<Item> LoadedItems;
 
         public MainWindow()
         {
             InitializeComponent();
-            this.AreComponenteLoaded = true;
+            foreach (var heroName in HeroNames)
+            {
+                this.HeroNameComboBox.Items.Add(heroName);
+            }
+
+            this.AreComponentsLoaded = true;
             LoadDataManager();
         }
 
@@ -61,6 +75,7 @@ namespace DeathMustDieSaveEditor.WPF
         private void LoadInitialValues()
         {
             this.GoldTextBox.Text = this.DataManager.GetGold().ToString();
+            this.HeroNameComboBox.SelectedIndex = 0;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -81,7 +96,7 @@ namespace DeathMustDieSaveEditor.WPF
 
         private void GoldTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!AreComponenteLoaded)
+            if (!AreComponentsLoaded)
                 return;
 
             string stringValue = this.GoldTextBox.Text;
@@ -93,6 +108,52 @@ namespace DeathMustDieSaveEditor.WPF
 
             var newGoldValue = int.Parse(stringValue);
             this.DataManager.SetGold(newGoldValue);
+        }
+
+        private void HeroNameComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var index = HeroNameComboBox.SelectedIndex;
+            switch (index)
+            {
+                case 0:
+                    this.SelectedClass = "Knight";
+                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Avoron.png", UriKind.Relative));
+                    break;
+                case 1:
+                    this.SelectedClass = "Barbarian";
+                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Kront.png", UriKind.Relative));
+                    break;
+                case 2:
+                    this.SelectedClass = "Sorceress";
+                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Witch.png", UriKind.Relative));
+                    break;
+                case 3:
+                    this.SelectedClass = "Assassin";
+                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Nixi.png", UriKind.Relative));
+                    break;
+                case 4:
+                    this.SelectedClass = "Warrior";
+                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Skadi.png", UriKind.Relative));
+                    break;
+                default:
+                    break;
+            }
+
+            if (this.DataManager.IsHeroUnlocked(this.SelectedClass))
+            {
+                this.IsHeroUnlocked = true;
+                this.LoadEquipment();
+            }
+            else
+            {
+                this.IsHeroUnlocked = false;
+            }
+        }
+
+        private void LoadEquipment()
+        {
+            this.LoadedItems = this.DataManager.GetItems(this.SelectedClass)
+                .ToList();
         }
     }
 }
