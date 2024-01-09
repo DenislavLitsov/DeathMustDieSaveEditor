@@ -118,23 +118,23 @@ namespace DeathMustDieSaveEditor.WPF
             {
                 case 0:
                     this.SelectedClass = "Knight";
-                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Avoron.png", UriKind.Relative));
+                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Resources/Assets/Avoron.png", UriKind.Relative));
                     break;
                 case 1:
                     this.SelectedClass = "Barbarian";
-                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Kront.png", UriKind.Relative));
+                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Resources/Assets/Kront.png", UriKind.Relative));
                     break;
                 case 2:
                     this.SelectedClass = "Sorceress";
-                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Witch.png", UriKind.Relative));
+                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Resources/Assets/Witch.png", UriKind.Relative));
                     break;
                 case 3:
                     this.SelectedClass = "Assassin";
-                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Nixi.png", UriKind.Relative));
+                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Resources/Assets/Nixi.png", UriKind.Relative));
                     break;
                 case 4:
                     this.SelectedClass = "Warrior";
-                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Skadi.png", UriKind.Relative));
+                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Resources/Assets/Skadi.png", UriKind.Relative));
                     break;
                 default:
                     break;

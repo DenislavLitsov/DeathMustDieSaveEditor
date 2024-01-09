@@ -29,18 +29,18 @@
     <Content Include="Resources\Assets\ItemSelection.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <CodeAnalysisDictionary Include="Resources\Assets\Kront.png">
+    <Content Include="Resources\Assets\Kront.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </CodeAnalysisDictionary>
-    <CodeAnalysisDictionary Include="Resources\Assets\Nixi.png">
+    </Content>
+    <Content Include="Resources\Assets\Nixi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </CodeAnalysisDictionary>
-    <CodeAnalysisDictionary Include="Resources\Assets\Skadi.png">
+    </Content>
+    <Content Include="Resources\Assets\Skadi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </CodeAnalysisDictionary>
-    <CodeAnalysisDictionary Include="Resources\Assets\Witch.png">
+    </Content>
+    <Content Include="Resources\Assets\Witch.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </CodeAnalysisDictionary>
+    </Content>
   </ItemGroup>
 
 </Project>
