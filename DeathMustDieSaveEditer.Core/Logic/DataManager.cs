@@ -70,6 +70,19 @@ namespace DeathMustDieSaveEditor.Core.Logic
             return heroNames;
         }
 
+        public IEnumerable<Item> GetItems(string heroClass)
+        {
+            var progression = this.SaveData.serializedSaveData.GetProgression();
+            var items = progression.GetEquippedItems(heroClass);
+            return items;
+        }
+
+        public bool IsHeroUnlocked(string heroName)
+        {
+            var heroes = this.GetUnlockedHeroes();
+            return heroes.Any(x => x.ToUpper() == heroName.ToUpper());
+        }
+
         public void UnlockHero()
         {
             throw new NotImplementedException();

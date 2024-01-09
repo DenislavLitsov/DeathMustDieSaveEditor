@@ -18,7 +18,7 @@
         <Label Content="Gold" HorizontalAlignment="Left" Margin="0,0,0,6" VerticalAlignment="Bottom"/>
         <ComboBox x:Name="HeroNameComboBox" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="HeroNameComboBox_SelectionChanged"/>
 
-        <Image x:Name="HeroAvatarImg" Source="/Avoron.png" Width="84" Height="87" VerticalAlignment="Top" HorizontalAlignment="Left" Stretch="Fill" Margin="10,65,0,0"/>
-        <Image x:Name="ItemSelectionImg" Margin="10,157,37,63" Source="/ItemSelection.png" Stretch="Fill"/>
+        <Image x:Name="HeroAvatarImg" Width="84" Height="87" VerticalAlignment="Top" HorizontalAlignment="Left" Source="/Resources/Assets/Avoron.png" Stretch="Fill" Margin="10,65,0,0"/>
+        <Image x:Name="ItemSelectionImg" Margin="10,157,37,63" Source="/Resources/Assets/ItemSelection.png" Stretch="Fill" MouseDown="ItemSelectionImg_MouseDown"/>
     </Grid>
 </Window>

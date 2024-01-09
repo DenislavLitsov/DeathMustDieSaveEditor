@@ -1,4 +1,5 @@
 ﻿using DeathMustDieSaveEditor.Core.Logic;
+using DeathMustDieSaveEditor.Core.Models;
 using DeathMustDieSaveEditor.Core.Models.SaveStructure;
 using System.IO;
 using System.Text;
@@ -154,6 +155,16 @@ namespace DeathMustDieSaveEditor.WPF
         {
             this.LoadedItems = this.DataManager.GetItems(this.SelectedClass)
                 .ToList();
+        }
+
+        private void ItemSelectionImg_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Console.WriteLine("Img was clicked");
+        }
+
+        private void ItemWasClicked(ItemType itemType)
+        {
+            throw new NotImplementedException();
         }
     }
 }

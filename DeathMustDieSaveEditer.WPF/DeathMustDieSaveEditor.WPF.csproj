@@ -23,12 +23,24 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Assets\Avoron.png" />
-    <Resource Include="Resources\Assets\ItemSelection.png" />
-    <Resource Include="Resources\Assets\Kront.png" />
-    <Resource Include="Resources\Assets\Nixi.png" />
-    <Resource Include="Resources\Assets\Skadi.png" />
-    <Resource Include="Resources\Assets\Witch.png" />
+    <Content Include="Resources\Assets\Avoron.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Assets\ItemSelection.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <CodeAnalysisDictionary Include="Resources\Assets\Kront.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </CodeAnalysisDictionary>
+    <CodeAnalysisDictionary Include="Resources\Assets\Nixi.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </CodeAnalysisDictionary>
+    <CodeAnalysisDictionary Include="Resources\Assets\Skadi.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </CodeAnalysisDictionary>
+    <CodeAnalysisDictionary Include="Resources\Assets\Witch.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </CodeAnalysisDictionary>
   </ItemGroup>
 
 </Project>
