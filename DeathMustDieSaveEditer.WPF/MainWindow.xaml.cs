@@ -165,16 +165,16 @@ namespace DeathMustDieSaveEditor.WPF
             // testing for creation
             this.CreateNewAttributeLine("Armor", "15");
 
-            var mousePosition = e.GetPosition(this.ItemSelectionImg);
-            var selection = this.mainWindowHelper.GetClickedType((int)mousePosition.X, (int)mousePosition.Y);
-            if (selection == ItemType.NONE)
-                return;
-
-            Console.WriteLine(selection.ToString());
-            var items = this.DataManager.GetItems(this.SelectedClass);
-            foreach (var item in items)
-            {
-            }
+            //var mousePosition = e.GetPosition(this.ItemSelectionImg);
+            //var selection = this.mainWindowHelper.GetClickedType((int)mousePosition.X, (int)mousePosition.Y);
+            //if (selection == ItemType.NONE)
+            //    return;
+            //
+            //Console.WriteLine(selection.ToString());
+            //var items = this.DataManager.GetItems(this.SelectedClass);
+            //foreach (var item in items)
+            //{
+            //}
         }
 
         private void ItemWasClicked(ItemType itemType)
