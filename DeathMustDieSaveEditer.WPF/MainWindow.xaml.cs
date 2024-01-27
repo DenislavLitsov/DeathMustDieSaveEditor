@@ -237,7 +237,9 @@ namespace DeathMustDieSaveEditor.WPF
 
         private void DeleteAllAttributeLines()
         {
-
+            Console.WriteLine("DELETE ALL!");
+            AttributeGrid.Children.RemoveRange(1,AttributeCount*3);
+            AttributeCount = 0;
         }
 
         private void DeleteAttributeLine(int lineNumber)
@@ -248,6 +250,11 @@ namespace DeathMustDieSaveEditor.WPF
         private void LineWasClicked(int lineNumber, string newValue)
         {
 
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.DeleteAllAttributeLines();
         }
     }
 }
