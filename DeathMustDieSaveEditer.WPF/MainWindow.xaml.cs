@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Label = System.Windows.Controls.Label;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace DeathMustDieSaveEditor.WPF
 {
@@ -182,9 +184,55 @@ namespace DeathMustDieSaveEditor.WPF
             throw new NotImplementedException();
         }
 
+        private int AttributeCount = 0;
+        private int HeightDifference = 25;
         private void CreateNewAttributeLine(string labelText, string textBoxValue)
         {
             Console.WriteLine($"LabelText {labelText}, textBoxValue: {textBoxValue}");
+            Label dynamicLabel = new Label();
+            dynamicLabel.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            dynamicLabel.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            dynamicLabel.Margin = new System.Windows.Thickness(10, 157+HeightDifference*AttributeCount, 0, 0);
+            dynamicLabel.Content = labelText + AttributeCount;
+
+            dynamicLabel.Name = $"AttributeLabel{AttributeCount}";
+
+            dynamicLabel.Width = 240;
+
+            dynamicLabel.Height = 30;
+
+            TextBox txtb = new TextBox();
+
+            txtb.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            txtb.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            txtb.Margin = new System.Windows.Thickness(92, 161 + HeightDifference * AttributeCount, 0, 0);
+
+            txtb.Name = $"AttributeValueTextBox{AttributeCount}";
+
+            txtb.Height = 18;
+
+            txtb.Width = 120;
+
+            txtb.Text = textBoxValue;
+
+            System.Windows.Controls.Button btn = new System.Windows.Controls.Button();
+
+            btn.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            btn.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            btn.Margin = new System.Windows.Thickness(241, 161 + HeightDifference * AttributeCount, 0, 0);
+
+            btn.Name = $"AttributeDeleteButton{AttributeCount}";
+
+            btn.Height = 20;
+
+            btn.Width = 39;
+
+            btn.Content = "Delete";
+
+            AttributeGrid.Children.Add(dynamicLabel);
+            AttributeGrid.Children.Add(txtb);
+            AttributeGrid.Children.Add(btn);
+            AttributeCount++;
         }
 
         private void DeleteAllAttributeLines()
