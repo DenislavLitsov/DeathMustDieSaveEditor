@@ -287,7 +287,7 @@ namespace DeathMustDieSaveEditor.WPF
             AttributeGrid.Children.Remove(myButton);
         }
 
-        private void LineWasClicked(int lineNumber, string newValue)
+        private void LineWasChanged(int lineNumber, string newValue)
         {
 
         }
