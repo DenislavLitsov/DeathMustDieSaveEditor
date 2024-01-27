@@ -4,5 +4,15 @@
     {
         Weapon,
         Head,
+        Torso,
+        Hands,
+        Waist,
+        Feet,
+        Ring,
+        Amulet,
+        Relic,
+        Jewel,
+        Lore,
+        NONE
     }
 }

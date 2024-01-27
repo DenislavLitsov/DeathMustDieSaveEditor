@@ -5,11 +5,16 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeathMustDieSaveEditor.Sandbox", "DeathMustDieGameCheat\DeathMustDieSaveEditor.Sandbox.csproj", "{69F9B6DA-9FE0-42BE-A03C-A1EBE4FA509C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeathMustDieSaveEditor.Core", "DeathMustDieSaveEditer.Core\DeathMustDieSaveEditor.Core.csproj", "{BD0CBA27-B304-4D86-9744-0B642E04821A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeathMustDieSaveEditor.Core", "DeathMustDieSaveEditer.Core\DeathMustDieSaveEditor.Core.csproj", "{BD0CBA27-B304-4D86-9744-0B642E04821A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeathMustDieSaveEditor.WPF", "DeathMustDieSaveEditer.WPF\DeathMustDieSaveEditor.WPF.csproj", "{028CA1FB-5299-4FCF-8568-E5F6C2808ABA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeathMustDieSaveEditor.WPF", "DeathMustDieSaveEditer.WPF\DeathMustDieSaveEditor.WPF.csproj", "{028CA1FB-5299-4FCF-8568-E5F6C2808ABA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeathMustDieSaveEditor.Tests", "DeathMustDieSaveEditer.Tests\DeathMustDieSaveEditor.Tests.csproj", "{1328C896-2AFF-4BDA-AFAF-0F7B42B133F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeathMustDieSaveEditor.Tests", "DeathMustDieSaveEditer.Tests\DeathMustDieSaveEditor.Tests.csproj", "{1328C896-2AFF-4BDA-AFAF-0F7B42B133F6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9B39227A-565D-47DD-A4DB-70D36B0A31D6}"
+	ProjectSection(SolutionItems) = preProject
+		Notes.txt = Notes.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

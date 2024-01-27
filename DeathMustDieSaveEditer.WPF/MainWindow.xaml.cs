@@ -1,6 +1,7 @@
 ﻿using DeathMustDieSaveEditor.Core.Logic;
 using DeathMustDieSaveEditor.Core.Models;
 using DeathMustDieSaveEditor.Core.Models.SaveStructure;
+using DeathMustDieSaveEditor.WPF.Helpers;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -21,6 +22,7 @@ namespace DeathMustDieSaveEditor.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainWindowHelper mainWindowHelper = new MainWindowHelper();
         private DataManager DataManager = new DataManager();
 
         private bool AreComponentsLoaded = false;
@@ -89,6 +91,7 @@ namespace DeathMustDieSaveEditor.WPF
         {
             throw new NotImplementedException();
         }
+
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
@@ -159,7 +162,16 @@ namespace DeathMustDieSaveEditor.WPF
 
         private void ItemSelectionImg_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Console.WriteLine("Img was clicked");
+            var mousePosition = e.GetPosition(this.ItemSelectionImg);
+            var selection = this.mainWindowHelper.GetClickedType((int)mousePosition.X, (int)mousePosition.Y);
+            if (selection == ItemType.NONE)
+                return;
+
+            Console.WriteLine(selection.ToString());
+            var items = this.DataManager.GetItems(this.SelectedClass);
+            foreach (var item in items)
+            {
+            }
         }
 
         private void ItemWasClicked(ItemType itemType)

@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models2\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DeathMustDieSaveEditer.Core\DeathMustDieSaveEditor.Core.csproj" />
   </ItemGroup>
 
