@@ -37,6 +37,9 @@ namespace DeathMustDieSaveEditor.WPF
 
         private List<Item> LoadedItems;
 
+        private int AttributeCount = 0;
+        private int PixelHeightDifference = 25;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -184,57 +187,41 @@ namespace DeathMustDieSaveEditor.WPF
             throw new NotImplementedException();
         }
 
-        private int AttributeCount = 0;
-        private int HeightDifference = 25;
         private void CreateNewAttributeLine(string labelText, string textBoxValue)
         {
-            Console.WriteLine($"LabelText {labelText}, textBoxValue: {textBoxValue}");
             Label dynamicLabel = new Label();
             dynamicLabel.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             dynamicLabel.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            dynamicLabel.Margin = new System.Windows.Thickness(10, 157 + HeightDifference * AttributeCount, 0, 0);
+            dynamicLabel.Margin = new System.Windows.Thickness(10, 157 + PixelHeightDifference * AttributeCount, 0, 0);
             dynamicLabel.Content = labelText + AttributeCount;
-
             dynamicLabel.Name = $"AttributeLabel{AttributeCount}";
-
             dynamicLabel.Width = 240;
-
             dynamicLabel.Height = 30;
 
             TextBox txtb = new TextBox();
-
             txtb.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             txtb.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            txtb.Margin = new System.Windows.Thickness(92, 161 + HeightDifference * AttributeCount, 0, 0);
-
+            txtb.Margin = new System.Windows.Thickness(92, 161 + PixelHeightDifference * AttributeCount, 0, 0);
             txtb.Name = $"AttributeValueTextBox{AttributeCount}";
-
             txtb.Height = 18;
-
             txtb.Width = 120;
-
             txtb.Text = textBoxValue;
 
             System.Windows.Controls.Button btn = new System.Windows.Controls.Button();
 
             btn.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             btn.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            btn.Margin = new System.Windows.Thickness(241, 161 + HeightDifference * AttributeCount, 0, 0);
-
+            btn.Margin = new System.Windows.Thickness(241, 161 + PixelHeightDifference * AttributeCount, 0, 0);
             btn.Name = $"AttributeDeleteButton{AttributeCount}";
-
             btn.Height = 20;
-
             btn.Width = 39;
-
             btn.Content = "Delete";
-
             btn.Click += new RoutedEventHandler(ButtonAttributeDelete_Click);
 
-            AttributeGrid.Children.Add(dynamicLabel);
-            AttributeGrid.Children.Add(txtb);
-            AttributeGrid.Children.Add(btn);
-            AttributeCount++;
+            this.AttributeGrid.Children.Add(dynamicLabel);
+            this.AttributeGrid.Children.Add(txtb);
+            this.AttributeGrid.Children.Add(btn);
+            this.AttributeCount++;
         }
 
         private void DeleteAllAttributeLines()
@@ -254,7 +241,7 @@ namespace DeathMustDieSaveEditor.WPF
             Label myTextLabel = null;
             System.Windows.Controls.Button myButton = null;
 
-            foreach (var child in AttributeGrid.Children)
+            foreach (var child in this.AttributeGrid.Children)
             {
                 if (child is TextBox)
                 {
@@ -282,9 +269,9 @@ namespace DeathMustDieSaveEditor.WPF
                 }
             }
 
-            AttributeGrid.Children.Remove(myTextBlock);
-            AttributeGrid.Children.Remove(myTextLabel);
-            AttributeGrid.Children.Remove(myButton);
+            this.AttributeGrid.Children.Remove(myTextBlock);
+            this.AttributeGrid.Children.Remove(myTextLabel);
+            this.AttributeGrid.Children.Remove(myButton);
         }
 
         private void LineWasChanged(int lineNumber, string newValue)
@@ -296,10 +283,10 @@ namespace DeathMustDieSaveEditor.WPF
         {
             this.DeleteAllAttributeLines();
         }
+
         private void ButtonAttributeDelete_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.Button button = sender as System.Windows.Controls.Button;
-            Console.WriteLine(button.Name);
             string Name = button.Name;
             int LetterCount = "AttributeDeleteButton".Length;
             string Number = Name.Substring(LetterCount, Name.Length - LetterCount);
