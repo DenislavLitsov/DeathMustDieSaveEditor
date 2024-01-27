@@ -162,6 +162,9 @@ namespace DeathMustDieSaveEditor.WPF
 
         private void ItemSelectionImg_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            // testing for creation
+            this.CreateNewAttributeLine("Armor", "15");
+
             var mousePosition = e.GetPosition(this.ItemSelectionImg);
             var selection = this.mainWindowHelper.GetClickedType((int)mousePosition.X, (int)mousePosition.Y);
             if (selection == ItemType.NONE)
@@ -177,6 +180,26 @@ namespace DeathMustDieSaveEditor.WPF
         private void ItemWasClicked(ItemType itemType)
         {
             throw new NotImplementedException();
+        }
+
+        private void CreateNewAttributeLine(string labelText, string textBoxValue)
+        {
+            Console.WriteLine($"LabelText {labelText}, textBoxValue: {textBoxValue}");
+        }
+
+        private void DeleteAllAttributeLines()
+        {
+
+        }
+
+        private void DeleteAttributeLine(int lineNumber)
+        {
+
+        }
+
+        private void LineWasClicked(int lineNumber, string newValue)
+        {
+
         }
     }
 }
