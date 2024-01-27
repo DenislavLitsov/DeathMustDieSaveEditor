@@ -192,7 +192,7 @@ namespace DeathMustDieSaveEditor.WPF
             Label dynamicLabel = new Label();
             dynamicLabel.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             dynamicLabel.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            dynamicLabel.Margin = new System.Windows.Thickness(10, 157+HeightDifference*AttributeCount, 0, 0);
+            dynamicLabel.Margin = new System.Windows.Thickness(10, 157 + HeightDifference * AttributeCount, 0, 0);
             dynamicLabel.Content = labelText + AttributeCount;
 
             dynamicLabel.Name = $"AttributeLabel{AttributeCount}";
@@ -239,8 +239,8 @@ namespace DeathMustDieSaveEditor.WPF
 
         private void DeleteAllAttributeLines()
         {
-           
-            AttributeGrid.Children.RemoveRange(1,AttributeCount*3);
+
+            AttributeGrid.Children.RemoveRange(1, AttributeCount * 3);
             AttributeCount = 0;
         }
 
@@ -250,9 +250,37 @@ namespace DeathMustDieSaveEditor.WPF
             string TextBoxName = $"AttributeValueTextBox{lineNumber}";
             string ButtonName = $"AttributeDeleteButton{lineNumber}";
 
-            var myTextBlock = (TextBox)this.FindName(TextBoxName);
-            var myTextLabel = (Label)this.FindName(LabelName);
-            var myButton = (System.Windows.Controls.Button)this.FindName(ButtonName);
+            TextBox myTextBlock = null;
+            Label myTextLabel = null;
+            System.Windows.Controls.Button myButton = null;
+
+            foreach (var child in AttributeGrid.Children)
+            {
+                if (child is TextBox)
+                {
+                    var parsedChild = (TextBox)child;
+                    if (parsedChild.Name == TextBoxName)
+                    {
+                        myTextBlock = parsedChild;
+                    }
+                }
+                else if (child is Label)
+                {
+                    var parsedChild = (Label)child;
+                    if (parsedChild.Name == LabelName)
+                    {
+                        myTextLabel = parsedChild;
+                    }
+                }
+                else if (child is System.Windows.Controls.Button)
+                {
+                    var parsedChild = (System.Windows.Controls.Button)child;
+                    if (parsedChild.Name == ButtonName)
+                    {
+                        myButton = parsedChild;
+                    }
+                }
+            }
 
             AttributeGrid.Children.Remove(myTextBlock);
             AttributeGrid.Children.Remove(myTextLabel);
@@ -274,7 +302,7 @@ namespace DeathMustDieSaveEditor.WPF
             Console.WriteLine(button.Name);
             string Name = button.Name;
             int LetterCount = "AttributeDeleteButton".Length;
-           string Number =  Name.Substring(LetterCount, Name.Length-LetterCount);
+            string Number = Name.Substring(LetterCount, Name.Length - LetterCount);
             this.DeleteAttributeLine(int.Parse(Number));
         }
     }
