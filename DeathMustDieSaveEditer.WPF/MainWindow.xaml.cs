@@ -229,6 +229,8 @@ namespace DeathMustDieSaveEditor.WPF
 
             btn.Content = "Delete";
 
+            btn.Click += new RoutedEventHandler(ButtonAttributeDelete_Click);
+
             AttributeGrid.Children.Add(dynamicLabel);
             AttributeGrid.Children.Add(txtb);
             AttributeGrid.Children.Add(btn);
@@ -237,14 +239,24 @@ namespace DeathMustDieSaveEditor.WPF
 
         private void DeleteAllAttributeLines()
         {
-            Console.WriteLine("DELETE ALL!");
+           
             AttributeGrid.Children.RemoveRange(1,AttributeCount*3);
             AttributeCount = 0;
         }
 
         private void DeleteAttributeLine(int lineNumber)
         {
+            string LabelName = $"AttributeLabel{lineNumber}";
+            string TextBoxName = $"AttributeValueTextBox{lineNumber}";
+            string ButtonName = $"AttributeDeleteButton{lineNumber}";
 
+            var myTextBlock = (TextBox)this.FindName(TextBoxName);
+            var myTextLabel = (Label)this.FindName(LabelName);
+            var myButton = (System.Windows.Controls.Button)this.FindName(ButtonName);
+
+            AttributeGrid.Children.Remove(myTextBlock);
+            AttributeGrid.Children.Remove(myTextLabel);
+            AttributeGrid.Children.Remove(myButton);
         }
 
         private void LineWasClicked(int lineNumber, string newValue)
@@ -255,6 +267,15 @@ namespace DeathMustDieSaveEditor.WPF
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.DeleteAllAttributeLines();
+        }
+        private void ButtonAttributeDelete_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Controls.Button button = sender as System.Windows.Controls.Button;
+            Console.WriteLine(button.Name);
+            string Name = button.Name;
+            int LetterCount = "AttributeDeleteButton".Length;
+           string Number =  Name.Substring(LetterCount, Name.Length-LetterCount);
+            this.DeleteAttributeLine(int.Parse(Number));
         }
     }
 }
