@@ -50,6 +50,7 @@ namespace DeathMustDieSaveEditor.WPF
             LoadDataManager();
 
             this.AttributeHelper = new MainWindowItemAttributeHelper(this.AttributeGrid);
+            this.AttributeHelper.ItemChanged += AttributeHelper_ItemChanged;
         }
 
         private void LoadDataManager()
@@ -172,10 +173,7 @@ namespace DeathMustDieSaveEditor.WPF
             if (selection == ItemType.NONE)
                 return;
 
-            var items = this.DataManager.GetItems(this.SelectedClass)
-                .ToList();
-
-            var itemClicked = items.FirstOrDefault(x => (ItemType)x.Type == selection);
+            var itemClicked = this.LoadedItems.FirstOrDefault(x => (ItemType)x.Type == selection);
             if (itemClicked != null)
             {
                 this.AttributeHelper.InitializeItem(itemClicked);
@@ -185,6 +183,11 @@ namespace DeathMustDieSaveEditor.WPF
             {
                 this.ItemTypeNameLabel.Content = "No item is equipped there";
             }
+        }
+
+        private void AttributeHelper_ItemChanged(object? sender, EventArgs e)
+        {
+            this.DataManager.SetItems(this.SelectedClass, this.LoadedItems);
         }
     }
 }

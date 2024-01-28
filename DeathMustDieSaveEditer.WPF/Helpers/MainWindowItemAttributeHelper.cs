@@ -9,6 +9,7 @@ using System.Windows.Interop;
 using Button = System.Windows.Controls.Button;
 using Label = System.Windows.Controls.Label;
 using TextBox = System.Windows.Controls.TextBox;
+using System.Xml.Linq;
 
 namespace DeathMustDieSaveEditor.WPF.Helpers
 {
@@ -19,7 +20,7 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
         private int AttributeCount = 0;
         private int PixelHeightDifference = 25;
 
-        List<string> AffixCodes = new List<string> { "a         ",
+        private List<string> AffixCodes = new List<string> { "a         ",
 "e",
 "h",
 "hr",
@@ -131,7 +132,7 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
 "unwitch  ",
 "unsncane "
  };
-        List<string> AffixNames = new List<string>()
+        private List<string> AffixNames = new List<string>()
         {
 "            Armor                                  ",
 "Evasion                                            ",
@@ -248,6 +249,8 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
 
         private Item CurrItem = null;
 
+        public event EventHandler ItemChanged;
+
         public MainWindowItemAttributeHelper(Grid grid)
         {
             this.grid = grid;
@@ -301,6 +304,7 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
             txtb.Height = 18;
             txtb.Width = 120;
             txtb.Text = textBoxValue;
+            txtb.TextChanged += ValueTextChanged;
 
             Button btn = new Button();
 
@@ -363,14 +367,20 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
                 }
             }
 
+            this.RemoveAffix(this.GetAffixCode(myTextLabel.Content.ToString()), myTextBlock.Text);
             this.grid.Children.Remove(myTextBlock);
             this.grid.Children.Remove(myTextLabel);
             this.grid.Children.Remove(myButton);
         }
 
-        private void AffixWasChanged(int lineNumber, string newValue)
+        private void AffixValueChange(string affixCode, string newValue)
         {
+            this.CurrItem.Affixes.First(x => x.Code == affixCode).Levels = int.Parse(newValue);
+        }
 
+        private void AffixTypeChanged(string affixCode, string newAffixCode)
+        {
+            this.CurrItem.Affixes.First(x => x.Code == affixCode).Code = newAffixCode;
         }
 
         private void ButtonAttributeDelete_Click(object sender, RoutedEventArgs e)
@@ -382,7 +392,7 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
             this.DeleteAttributeLine(int.Parse(Number));
         }
 
-        private string GetCode(string name)
+        private string GetAffixCode(string name)
         {
             var index = this.AffixNames.IndexOf(name);
             var result = this.AffixCodes[index];
@@ -394,6 +404,33 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
             var index = this.AffixCodes.IndexOf(code);
             var result = this.AffixNames[index];
             return result;
+        }
+
+        private void ValueTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var parsedSender = (TextBox)sender;
+            int letterCount = "AttributeValueTextBox".Length;
+            var selectedIndex = parsedSender.Name.Substring(letterCount, parsedSender.Name.Length - letterCount);
+            var attributeLabelName = $"AttributeLabel{selectedIndex}";
+
+            foreach (var child in this.grid.Children)
+            {
+                if (child is Label && ((Label)child).Name == attributeLabelName)
+                {
+                    var affixName = ((Label)child).Content.ToString();
+                    var affixCode = this.GetAffixCode(affixName);
+
+                    this.CurrItem.Affixes.First(x => x.Code == affixCode).Levels = int.Parse(parsedSender.Text);
+                    this.ItemChanged(sender, e);
+                }
+            }
+        }
+
+        private void RemoveAffix(string affixCode, string affixValue)
+        {
+            var affixToRemove = this.CurrItem.Affixes.First(x => x.Code == affixCode && x.Levels.ToString() == affixValue);
+            this.CurrItem.Affixes.Remove(affixToRemove);
+            this.ItemChanged(this, null);
         }
     }
 }
