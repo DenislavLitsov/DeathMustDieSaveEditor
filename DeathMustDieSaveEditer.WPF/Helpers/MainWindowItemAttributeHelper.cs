@@ -9,6 +9,7 @@ using System.Windows.Interop;
 using Button = System.Windows.Controls.Button;
 using Label = System.Windows.Controls.Label;
 using TextBox = System.Windows.Controls.TextBox;
+using ComboBox = System.Windows.Controls.ComboBox;
 using System.Xml.Linq;
 
 namespace DeathMustDieSaveEditor.WPF.Helpers
@@ -286,20 +287,27 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
 
         private void CreateNewAttributeLine(string affixCode, string textBoxValue)
         {
-            Label dynamicLabel = new Label();
-            dynamicLabel.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            dynamicLabel.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            dynamicLabel.Margin = new System.Windows.Thickness(10, 157 + PixelHeightDifference * AttributeCount, 0, 0);
-            dynamicLabel.Content = this.GetAffixName(affixCode);
-            dynamicLabel.ToolTip = this.GetAffixName(affixCode);
-            dynamicLabel.Name = $"AttributeLabel{AttributeCount}";
-            dynamicLabel.Width = 240;
-            dynamicLabel.Height = 30;
+            ComboBox comboBox = new ComboBox();
+            comboBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            comboBox.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            comboBox.Margin = new System.Windows.Thickness(10, 157 + PixelHeightDifference * AttributeCount, 0, 0);
+            //comboBox.Content = this.GetAffixName(affixCode);
+            comboBox.ToolTip = this.GetAffixName(affixCode);
+            comboBox.Name = $"AttributeLabel{AttributeCount}";
+            comboBox.Width = 240;
+            comboBox.Height = 30;
+            for (int i = 0; i < AffixNames.Count; i++)
+            {
+                comboBox.Items.Add(AffixNames[i]);
+            }
+            comboBox.SelectedIndex = comboBox.Items.IndexOf(this.GetAffixName(affixCode));
+
+            comboBox.SelectionChanged += new SelectionChangedEventHandler(ButtonAttributeDelete_Click)
 
             TextBox txtb = new TextBox();
             txtb.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             txtb.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            txtb.Margin = new System.Windows.Thickness(92, 161 + PixelHeightDifference * AttributeCount, 0, 0);
+            txtb.Margin = new System.Windows.Thickness(92+190, 161 + PixelHeightDifference * AttributeCount, 0, 0);
             txtb.Name = $"AttributeValueTextBox{AttributeCount}";
             txtb.Height = 18;
             txtb.Width = 120;
@@ -310,14 +318,14 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
 
             btn.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             btn.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            btn.Margin = new System.Windows.Thickness(241, 161 + PixelHeightDifference * AttributeCount, 0, 0);
+            btn.Margin = new System.Windows.Thickness(241+190, 161 + PixelHeightDifference * AttributeCount, 0, 0);
             btn.Name = $"AttributeDeleteButton{AttributeCount}";
             btn.Height = 20;
             btn.Width = 39;
             btn.Content = "Delete";
             btn.Click += new RoutedEventHandler(ButtonAttributeDelete_Click);
 
-            this.grid.Children.Add(dynamicLabel);
+            this.grid.Children.Add(comboBox);
             this.grid.Children.Add(txtb);
             this.grid.Children.Add(btn);
             this.AttributeCount++;
@@ -336,7 +344,7 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
             string ButtonName = $"AttributeDeleteButton{lineNumber}";
 
             TextBox myTextBlock = null;
-            Label myTextLabel = null;
+            ComboBox myTextLabel = null;
             System.Windows.Controls.Button myButton = null;
 
             foreach (var child in this.grid.Children)
@@ -349,9 +357,9 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
                         myTextBlock = parsedChild;
                     }
                 }
-                else if (child is Label)
+                else if (child is ComboBox)
                 {
-                    var parsedChild = (Label)child;
+                    var parsedChild = (ComboBox)child;
                     if (parsedChild.Name == LabelName)
                     {
                         myTextLabel = parsedChild;
