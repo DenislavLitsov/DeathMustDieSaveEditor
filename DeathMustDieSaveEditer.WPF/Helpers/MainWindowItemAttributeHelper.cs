@@ -11,6 +11,8 @@ using Label = System.Windows.Controls.Label;
 using TextBox = System.Windows.Controls.TextBox;
 using ComboBox = System.Windows.Controls.ComboBox;
 using System.Xml.Linq;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
 
 namespace DeathMustDieSaveEditor.WPF.Helpers
 {
@@ -330,6 +332,7 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
             txtb.Width = 120;
             txtb.Text = textBoxValue;
             txtb.TextChanged += ValueTextChanged;
+            txtb.PreviewTextInput += this.NumberValidationTextBox;
 
             Button btn = new Button();
 
@@ -426,7 +429,24 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
                     var affixName = ((ComboBox)child).SelectedValue.ToString();
                     var affixCode = this.GetAffixCode(affixName);
 
-                    this.CurrItem.Affixes.First(x => x.Code == affixCode).Levels = int.Parse(parsedSender.Text);
+                    if (string.IsNullOrEmpty(parsedSender.Text))
+                    {
+                        parsedSender.Text = "1";
+                    }
+
+                    int value = int.Parse(parsedSender.Text);
+                    if (value > 9999)
+                    {
+                        value = 9999;
+                        parsedSender.Text = "9999";
+                    }
+                    else if (value < 0)
+                    {
+                        value = 1;
+                        parsedSender.Text = "1";
+                    }
+
+                    this.CurrItem.Affixes.First(x => x.Code == affixCode).Levels = value;
                     this.ItemChanged(sender, e);
                 }
             }
@@ -469,6 +489,12 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
             this.CurrItem.Affixes.First(x => x.Code == oldAffixCode).Code = newAffixCode;
 
             this.ItemChanged(sender, e);
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

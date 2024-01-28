@@ -118,6 +118,11 @@ namespace DeathMustDieSaveEditor.WPF
                 stringValue = "0";
                 this.GoldTextBox.Text = stringValue;
             }
+            else if (int.Parse(stringValue) > 99999999)
+            {
+                this.GoldTextBox.Text = "99999999";
+                stringValue = "99999999";
+            }
 
             var newGoldValue = int.Parse(stringValue);
             this.DataManager.SetGold(newGoldValue);
