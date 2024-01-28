@@ -43,4 +43,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\TestSave.sav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

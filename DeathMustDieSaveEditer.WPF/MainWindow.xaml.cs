@@ -54,7 +54,7 @@ namespace DeathMustDieSaveEditor.WPF
 
         private void LoadDataManager()
         {
-            string loadedFilePath = this.DataManager.TryLoadSaveAlone();
+            string loadedFilePath = this.DataManager.LoadTestSave();
             if (string.IsNullOrEmpty(loadedFilePath))
                 return;
 
