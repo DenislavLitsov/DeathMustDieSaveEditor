@@ -20,7 +20,7 @@
 
         <Image x:Name="HeroAvatarImg" Width="84" Height="87" VerticalAlignment="Top" HorizontalAlignment="Left" Source="/Resources/Assets/Avoron.png" Stretch="Fill" Margin="10,65,0,0"/>
         <Image x:Name="ItemSelectionImg" Margin="10,157,37,63" Source="/Resources/Assets/ItemSelection.png" Stretch="Fill" MouseDown="ItemSelectionImg_MouseDown"/>
-        <Grid x:Name="AttributeGrid" Grid.Column="1">
+        <Grid x:Name="AttributeGrid" Grid.Column="1" Margin="0,0,0,63">
             <Label x:Name="ItemTypeNameLabel" Content="Please select an item from the empty image :)" HorizontalAlignment="Left" Margin="10,125,0,0" VerticalAlignment="Top"/>
         </Grid>
     </Grid>
