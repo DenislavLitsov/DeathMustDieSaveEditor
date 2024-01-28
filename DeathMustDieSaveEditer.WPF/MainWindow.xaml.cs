@@ -179,7 +179,7 @@ namespace DeathMustDieSaveEditor.WPF
             if (itemClicked != null)
             {
                 this.AttributeHelper.InitializeItem(itemClicked);
-                this.ItemTypeNameLabel.Content = ((ItemType)itemClicked.Type).ToString(); ;
+                this.ItemTypeNameLabel.Content = ((ItemType)itemClicked.Type).ToString();
             }
             else
             {
