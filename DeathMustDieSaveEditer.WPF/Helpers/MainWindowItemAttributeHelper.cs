@@ -361,11 +361,9 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
         {
             string LabelName = $"AttributeLabel{lineNumber}";
             string TextBoxName = $"AttributeValueTextBox{lineNumber}";
-            string ButtonName = $"AttributeDeleteButton{lineNumber}";
 
             TextBox myTextBlock = null;
             ComboBox myComboBox = null;
-            System.Windows.Controls.Button myButton = null;
 
             foreach (var child in this.grid.Children)
             {
@@ -385,20 +383,9 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
                         myComboBox = parsedChild;
                     }
                 }
-                else if (child is System.Windows.Controls.Button)
-                {
-                    var parsedChild = (System.Windows.Controls.Button)child;
-                    if (parsedChild.Name == ButtonName)
-                    {
-                        myButton = parsedChild;
-                    }
-                }
             }
 
             this.RemoveAffix(this.GetAffixCode(myComboBox.SelectedItem.ToString()), myTextBlock.Text);
-            this.grid.Children.Remove(myTextBlock);
-            this.grid.Children.Remove(myComboBox);
-            this.grid.Children.Remove(myButton);
         }
 
         private string GetAffixCode(string name)
@@ -465,7 +452,10 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
             string Name = button.Name;
             int LetterCount = "AttributeDeleteButton".Length;
             string Number = Name.Substring(LetterCount, Name.Length - LetterCount);
+
             this.DeleteAttributeLine(int.Parse(Number));
+            this.DeleteAllAttributeLines();
+            this.InitializeItem(this.CurrItem);
         }
 
         private void OnDropDownOpen(object sender, EventArgs e)
