@@ -36,9 +36,7 @@ namespace DeathMustDieSaveEditor.WPF
         private bool IsHeroUnlocked = false;
 
         private List<Item> LoadedItems;
-
-        private int AttributeCount = 0;
-        private int PixelHeightDifference = 25;
+        private MainWindowItemAttributeHelper AttributeHelper;
 
         public MainWindow()
         {
@@ -50,6 +48,8 @@ namespace DeathMustDieSaveEditor.WPF
 
             this.AreComponentsLoaded = true;
             LoadDataManager();
+
+            this.AttributeHelper = new MainWindowItemAttributeHelper(this.AttributeGrid);
         }
 
         private void LoadDataManager()
@@ -167,130 +167,24 @@ namespace DeathMustDieSaveEditor.WPF
 
         private void ItemSelectionImg_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            // testing for creation
-            this.CreateNewAttributeLine("Armor", "15");
+            var mousePosition = e.GetPosition(this.ItemSelectionImg);
+            var selection = this.mainWindowHelper.GetClickedType((int)mousePosition.X, (int)mousePosition.Y);
+            if (selection == ItemType.NONE)
+                return;
 
-            //var mousePosition = e.GetPosition(this.ItemSelectionImg);
-            //var selection = this.mainWindowHelper.GetClickedType((int)mousePosition.X, (int)mousePosition.Y);
-            //if (selection == ItemType.NONE)
-            //    return;
-            //
-            //Console.WriteLine(selection.ToString());
-            //var items = this.DataManager.GetItems(this.SelectedClass);
-            //foreach (var item in items)
-            //{
-            //}
-        }
+            var items = this.DataManager.GetItems(this.SelectedClass)
+                .ToList();
 
-        private void ItemWasClicked(ItemType itemType)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void CreateNewAttributeLine(string labelText, string textBoxValue)
-        {
-            Label dynamicLabel = new Label();
-            dynamicLabel.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            dynamicLabel.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            dynamicLabel.Margin = new System.Windows.Thickness(10, 157 + PixelHeightDifference * AttributeCount, 0, 0);
-            dynamicLabel.Content = labelText + AttributeCount;
-            dynamicLabel.Name = $"AttributeLabel{AttributeCount}";
-            dynamicLabel.Width = 240;
-            dynamicLabel.Height = 30;
-
-            TextBox txtb = new TextBox();
-            txtb.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            txtb.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            txtb.Margin = new System.Windows.Thickness(92, 161 + PixelHeightDifference * AttributeCount, 0, 0);
-            txtb.Name = $"AttributeValueTextBox{AttributeCount}";
-            txtb.Height = 18;
-            txtb.Width = 120;
-            txtb.Text = textBoxValue;
-
-            System.Windows.Controls.Button btn = new System.Windows.Controls.Button();
-
-            btn.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            btn.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            btn.Margin = new System.Windows.Thickness(241, 161 + PixelHeightDifference * AttributeCount, 0, 0);
-            btn.Name = $"AttributeDeleteButton{AttributeCount}";
-            btn.Height = 20;
-            btn.Width = 39;
-            btn.Content = "Delete";
-            btn.Click += new RoutedEventHandler(ButtonAttributeDelete_Click);
-
-            this.AttributeGrid.Children.Add(dynamicLabel);
-            this.AttributeGrid.Children.Add(txtb);
-            this.AttributeGrid.Children.Add(btn);
-            this.AttributeCount++;
-        }
-
-        private void DeleteAllAttributeLines()
-        {
-
-            AttributeGrid.Children.RemoveRange(1, AttributeCount * 3);
-            AttributeCount = 0;
-        }
-
-        private void DeleteAttributeLine(int lineNumber)
-        {
-            string LabelName = $"AttributeLabel{lineNumber}";
-            string TextBoxName = $"AttributeValueTextBox{lineNumber}";
-            string ButtonName = $"AttributeDeleteButton{lineNumber}";
-
-            TextBox myTextBlock = null;
-            Label myTextLabel = null;
-            System.Windows.Controls.Button myButton = null;
-
-            foreach (var child in this.AttributeGrid.Children)
+            var itemClicked = items.FirstOrDefault(x => (ItemType)x.Type == selection);
+            if (itemClicked != null)
             {
-                if (child is TextBox)
-                {
-                    var parsedChild = (TextBox)child;
-                    if (parsedChild.Name == TextBoxName)
-                    {
-                        myTextBlock = parsedChild;
-                    }
-                }
-                else if (child is Label)
-                {
-                    var parsedChild = (Label)child;
-                    if (parsedChild.Name == LabelName)
-                    {
-                        myTextLabel = parsedChild;
-                    }
-                }
-                else if (child is System.Windows.Controls.Button)
-                {
-                    var parsedChild = (System.Windows.Controls.Button)child;
-                    if (parsedChild.Name == ButtonName)
-                    {
-                        myButton = parsedChild;
-                    }
-                }
+                this.AttributeHelper.InitializeItem(itemClicked);
+                this.ItemTypeNameLabel.Content = ((ItemType)itemClicked.Type).ToString(); ;
             }
-
-            this.AttributeGrid.Children.Remove(myTextBlock);
-            this.AttributeGrid.Children.Remove(myTextLabel);
-            this.AttributeGrid.Children.Remove(myButton);
-        }
-
-        private void LineWasChanged(int lineNumber, string newValue)
-        {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.DeleteAllAttributeLines();
-        }
-
-        private void ButtonAttributeDelete_Click(object sender, RoutedEventArgs e)
-        {
-            System.Windows.Controls.Button button = sender as System.Windows.Controls.Button;
-            string Name = button.Name;
-            int LetterCount = "AttributeDeleteButton".Length;
-            string Number = Name.Substring(LetterCount, Name.Length - LetterCount);
-            this.DeleteAttributeLine(int.Parse(Number));
+            else
+            {
+                this.ItemTypeNameLabel.Content = "No item is equipped there";
+            }
         }
     }
 }

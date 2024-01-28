@@ -57,6 +57,18 @@ namespace DeathMustDieSaveEditor.Core.Models.SaveStructure
     {
         public string Code { get; set; }
         public int Levels { get; set; }
+
+        public string GetName()
+        {
+            if (Code == "a")
+            {
+                return "armor";
+            }
+            else
+            {
+                return "unknown";
+            }
+        }
     }
 
     [Serializable]
