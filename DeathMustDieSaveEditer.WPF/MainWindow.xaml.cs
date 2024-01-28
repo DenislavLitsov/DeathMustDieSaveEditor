@@ -56,7 +56,8 @@ namespace DeathMustDieSaveEditor.WPF
 
         private void LoadDataManager()
         {
-            string loadedFilePath = this.DataManager.LoadTestSave();
+            //string loadedFilePath = this.DataManager.LoadTestSave();
+            string loadedFilePath = this.DataManager.TryLoadSaveAlone();
             if (string.IsNullOrEmpty(loadedFilePath))
                 return;
 
@@ -190,6 +191,11 @@ namespace DeathMustDieSaveEditor.WPF
         private void AttributeHelper_ItemChanged(object? sender, EventArgs e)
         {
             this.DataManager.SetItems(this.SelectedClass, this.LoadedItems);
+        }
+
+        private void AddNewAffixButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.AttributeHelper.AddNewAffix();
         }
     }
 }
