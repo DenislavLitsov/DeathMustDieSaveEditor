@@ -31,6 +31,22 @@ namespace DeathMustDieSaveEditor.Core.Logic
             return savePath;
         }
 
+        public string LoadTestSave()
+        {
+            FileManager fileManager = new FileManager();
+            //string savePath = fileManager.GetSavePathIfExists();
+            string savePath = "Resources/TestSave.sav";
+
+            if (savePath == null || savePath == string.Empty)
+                return string.Empty;
+
+            this.SavePath = savePath;
+            string json = fileManager.LoadData(savePath);
+            this.ParseJsonToSaveStructure(json);
+
+            return savePath;
+        }
+
         public void LoadSave(string savePath)
         {
             this.SavePath = savePath;
@@ -75,6 +91,13 @@ namespace DeathMustDieSaveEditor.Core.Logic
             var progression = this.SaveData.serializedSaveData.GetProgression();
             var items = progression.GetEquippedItems(heroClass);
             return items;
+        }
+
+        public void SetItems(string heroClass, IEnumerable<Item> newItems)
+        {
+            var progression = this.SaveData.serializedSaveData.GetProgression();
+            progression.SetEquippedItems(heroClass, newItems);
+            this.SaveData.serializedSaveData.SaveProgression(progression);
         }
 
         public bool IsHeroUnlocked(string heroName)

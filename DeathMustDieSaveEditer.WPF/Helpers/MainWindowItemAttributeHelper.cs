@@ -9,6 +9,10 @@ using System.Windows.Interop;
 using Button = System.Windows.Controls.Button;
 using Label = System.Windows.Controls.Label;
 using TextBox = System.Windows.Controls.TextBox;
+using ComboBox = System.Windows.Controls.ComboBox;
+using System.Xml.Linq;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
 
 namespace DeathMustDieSaveEditor.WPF.Helpers
 {
@@ -19,7 +23,7 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
         private int AttributeCount = 0;
         private int PixelHeightDifference = 25;
 
-        List<string> AffixCodes = new List<string> { "a         ",
+        private List<string> AffixCodes = new List<string> { "a         ",
 "e",
 "h",
 "hr",
@@ -131,7 +135,7 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
 "unwitch  ",
 "unsncane "
  };
-        List<string> AffixNames = new List<string>()
+        private List<string> AffixNames = new List<string>()
         {
 "            Armor                                  ",
 "Evasion                                            ",
@@ -247,6 +251,9 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
         };
 
         private Item CurrItem = null;
+        private string AffixNameBeforeChange;
+
+        public event EventHandler ItemChanged;
 
         public MainWindowItemAttributeHelper(Grid grid)
         {
@@ -281,39 +288,64 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
             }
         }
 
+        public void AddNewAffix()
+        {
+            if (this.CurrItem == null)
+                return;
+
+            var code = this.AffixCodes.First(x=>this.CurrItem.Affixes.Any(s=>s.Code == x) == false);
+            this.CreateNewAttributeLine(code, "1");
+            this.CurrItem.Affixes.Add(new Affix()
+            {
+                Code = code,
+                Levels = 1
+            });
+
+            this.ItemChanged(this, null);
+        }
+
         private void CreateNewAttributeLine(string affixCode, string textBoxValue)
         {
-            Label dynamicLabel = new Label();
-            dynamicLabel.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            dynamicLabel.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            dynamicLabel.Margin = new System.Windows.Thickness(10, 157 + PixelHeightDifference * AttributeCount, 0, 0);
-            dynamicLabel.Content = this.GetAffixName(affixCode);
-            dynamicLabel.ToolTip = this.GetAffixName(affixCode);
-            dynamicLabel.Name = $"AttributeLabel{AttributeCount}";
-            dynamicLabel.Width = 240;
-            dynamicLabel.Height = 30;
+            ComboBox comboBox = new ComboBox();
+            comboBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            comboBox.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            comboBox.Margin = new System.Windows.Thickness(10, 157 + PixelHeightDifference * AttributeCount, 0, 0);
+            //comboBox.Content = this.GetAffixName(affixCode);
+            comboBox.ToolTip = this.GetAffixName(affixCode);
+            comboBox.Name = $"AttributeLabel{AttributeCount}";
+            comboBox.Width = 240;
+            comboBox.Height = 22;
+            for (int i = 0; i < AffixNames.Count; i++)
+            {
+                comboBox.Items.Add(AffixNames[i]);
+            }
+            comboBox.SelectedIndex = comboBox.Items.IndexOf(this.GetAffixName(affixCode));
+            comboBox.DropDownOpened += new EventHandler(this.OnDropDownOpen);
+            comboBox.SelectionChanged += new SelectionChangedEventHandler(this.OnDropDownSelectionChange);
 
             TextBox txtb = new TextBox();
             txtb.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             txtb.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            txtb.Margin = new System.Windows.Thickness(92, 161 + PixelHeightDifference * AttributeCount, 0, 0);
+            txtb.Margin = new System.Windows.Thickness(257, 159 + PixelHeightDifference * AttributeCount, 0, 0);
             txtb.Name = $"AttributeValueTextBox{AttributeCount}";
             txtb.Height = 18;
             txtb.Width = 120;
             txtb.Text = textBoxValue;
+            txtb.TextChanged += ValueTextChanged;
+            txtb.PreviewTextInput += this.NumberValidationTextBox;
 
             Button btn = new Button();
 
             btn.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             btn.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            btn.Margin = new System.Windows.Thickness(241, 161 + PixelHeightDifference * AttributeCount, 0, 0);
+            btn.Margin = new System.Windows.Thickness(385, 158 + PixelHeightDifference * AttributeCount, 0, 0);
             btn.Name = $"AttributeDeleteButton{AttributeCount}";
             btn.Height = 20;
             btn.Width = 39;
             btn.Content = "Delete";
             btn.Click += new RoutedEventHandler(ButtonAttributeDelete_Click);
 
-            this.grid.Children.Add(dynamicLabel);
+            this.grid.Children.Add(comboBox);
             this.grid.Children.Add(txtb);
             this.grid.Children.Add(btn);
             this.AttributeCount++;
@@ -321,7 +353,7 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
 
         private void DeleteAllAttributeLines()
         {
-            this.grid.Children.RemoveRange(1, AttributeCount * 3);
+            this.grid.Children.RemoveRange(2, AttributeCount * 3);
             AttributeCount = 0;
         }
 
@@ -329,11 +361,9 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
         {
             string LabelName = $"AttributeLabel{lineNumber}";
             string TextBoxName = $"AttributeValueTextBox{lineNumber}";
-            string ButtonName = $"AttributeDeleteButton{lineNumber}";
 
             TextBox myTextBlock = null;
-            Label myTextLabel = null;
-            System.Windows.Controls.Button myButton = null;
+            ComboBox myComboBox = null;
 
             foreach (var child in this.grid.Children)
             {
@@ -345,44 +375,20 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
                         myTextBlock = parsedChild;
                     }
                 }
-                else if (child is Label)
+                else if (child is ComboBox)
                 {
-                    var parsedChild = (Label)child;
+                    var parsedChild = (ComboBox)child;
                     if (parsedChild.Name == LabelName)
                     {
-                        myTextLabel = parsedChild;
-                    }
-                }
-                else if (child is System.Windows.Controls.Button)
-                {
-                    var parsedChild = (System.Windows.Controls.Button)child;
-                    if (parsedChild.Name == ButtonName)
-                    {
-                        myButton = parsedChild;
+                        myComboBox = parsedChild;
                     }
                 }
             }
 
-            this.grid.Children.Remove(myTextBlock);
-            this.grid.Children.Remove(myTextLabel);
-            this.grid.Children.Remove(myButton);
+            this.RemoveAffix(this.GetAffixCode(myComboBox.SelectedItem.ToString()), myTextBlock.Text);
         }
 
-        private void AffixWasChanged(int lineNumber, string newValue)
-        {
-
-        }
-
-        private void ButtonAttributeDelete_Click(object sender, RoutedEventArgs e)
-        {
-            System.Windows.Controls.Button button = sender as System.Windows.Controls.Button;
-            string Name = button.Name;
-            int LetterCount = "AttributeDeleteButton".Length;
-            string Number = Name.Substring(LetterCount, Name.Length - LetterCount);
-            this.DeleteAttributeLine(int.Parse(Number));
-        }
-
-        private string GetCode(string name)
+        private string GetAffixCode(string name)
         {
             var index = this.AffixNames.IndexOf(name);
             var result = this.AffixCodes[index];
@@ -394,6 +400,91 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
             var index = this.AffixCodes.IndexOf(code);
             var result = this.AffixNames[index];
             return result;
+        }
+
+        private void ValueTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var parsedSender = (TextBox)sender;
+            int letterCount = "AttributeValueTextBox".Length;
+            var selectedIndex = parsedSender.Name.Substring(letterCount, parsedSender.Name.Length - letterCount);
+            var attributeLabelName = $"AttributeLabel{selectedIndex}";
+
+            foreach (var child in this.grid.Children)
+            {
+                if (child is ComboBox && ((ComboBox)child).Name == attributeLabelName)
+                {
+                    var affixName = ((ComboBox)child).SelectedValue.ToString();
+                    var affixCode = this.GetAffixCode(affixName);
+
+                    if (string.IsNullOrEmpty(parsedSender.Text))
+                    {
+                        parsedSender.Text = "1";
+                    }
+
+                    int value = int.Parse(parsedSender.Text);
+                    if (value > 9999)
+                    {
+                        value = 9999;
+                        parsedSender.Text = "9999";
+                    }
+                    else if (value < 0)
+                    {
+                        value = 1;
+                        parsedSender.Text = "1";
+                    }
+
+                    this.CurrItem.Affixes.First(x => x.Code == affixCode).Levels = value;
+                    this.ItemChanged(sender, e);
+                }
+            }
+        }
+
+        private void RemoveAffix(string affixCode, string affixValue)
+        {
+            var affixToRemove = this.CurrItem.Affixes.First(x => x.Code == affixCode && x.Levels.ToString() == affixValue);
+            this.CurrItem.Affixes.Remove(affixToRemove);
+            this.ItemChanged(this, null);
+        }
+
+        private void ButtonAttributeDelete_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Controls.Button button = sender as System.Windows.Controls.Button;
+            string Name = button.Name;
+            int LetterCount = "AttributeDeleteButton".Length;
+            string Number = Name.Substring(LetterCount, Name.Length - LetterCount);
+
+            this.DeleteAttributeLine(int.Parse(Number));
+            this.DeleteAllAttributeLines();
+            this.InitializeItem(this.CurrItem);
+        }
+
+        private void OnDropDownOpen(object sender, EventArgs e)
+        {
+            var combobox = (ComboBox)sender;
+            this.AffixNameBeforeChange = combobox.SelectedValue.ToString();
+        }
+
+        private void OnDropDownSelectionChange(object sender, SelectionChangedEventArgs e)
+        {
+            var combobox = (ComboBox)sender;
+            var newAffixName = combobox.SelectedValue.ToString();
+            var newAffixCode = this.GetAffixCode(newAffixName);
+            if (this.CurrItem.Affixes.Any(x=>x.Code == newAffixCode))
+            {
+                combobox.SelectedValue = this.AffixNameBeforeChange;
+                return;
+            }
+
+            var oldAffixCode = this.GetAffixCode(this.AffixNameBeforeChange);
+            this.CurrItem.Affixes.First(x => x.Code == oldAffixCode).Code = newAffixCode;
+
+            this.ItemChanged(sender, e);
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

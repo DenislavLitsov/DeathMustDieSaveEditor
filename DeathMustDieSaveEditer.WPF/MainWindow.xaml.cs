@@ -2,6 +2,7 @@
 using DeathMustDieSaveEditor.Core.Models;
 using DeathMustDieSaveEditor.Core.Models.SaveStructure;
 using DeathMustDieSaveEditor.WPF.Helpers;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -50,10 +51,12 @@ namespace DeathMustDieSaveEditor.WPF
             LoadDataManager();
 
             this.AttributeHelper = new MainWindowItemAttributeHelper(this.AttributeGrid);
+            this.AttributeHelper.ItemChanged += AttributeHelper_ItemChanged;
         }
 
         private void LoadDataManager()
         {
+            //string loadedFilePath = this.DataManager.LoadTestSave();
             string loadedFilePath = this.DataManager.TryLoadSaveAlone();
             if (string.IsNullOrEmpty(loadedFilePath))
                 return;
@@ -94,7 +97,8 @@ namespace DeathMustDieSaveEditor.WPF
 
         private void DonateButton_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            string donateUrl = "https://www.paypal.com/donate/?hosted_button_id=QGHZY8WJM3B84";
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("cmd", $"/c start {donateUrl}") { CreateNoWindow = true });
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -113,6 +117,11 @@ namespace DeathMustDieSaveEditor.WPF
             {
                 stringValue = "0";
                 this.GoldTextBox.Text = stringValue;
+            }
+            else if (int.Parse(stringValue) > 99999999)
+            {
+                this.GoldTextBox.Text = "99999999";
+                stringValue = "99999999";
             }
 
             var newGoldValue = int.Parse(stringValue);
@@ -172,10 +181,7 @@ namespace DeathMustDieSaveEditor.WPF
             if (selection == ItemType.NONE)
                 return;
 
-            var items = this.DataManager.GetItems(this.SelectedClass)
-                .ToList();
-
-            var itemClicked = items.FirstOrDefault(x => (ItemType)x.Type == selection);
+            var itemClicked = this.LoadedItems.FirstOrDefault(x => (ItemType)x.Type == selection);
             if (itemClicked != null)
             {
                 this.AttributeHelper.InitializeItem(itemClicked);
@@ -185,6 +191,16 @@ namespace DeathMustDieSaveEditor.WPF
             {
                 this.ItemTypeNameLabel.Content = "No item is equipped there";
             }
+        }
+
+        private void AttributeHelper_ItemChanged(object? sender, EventArgs e)
+        {
+            this.DataManager.SetItems(this.SelectedClass, this.LoadedItems);
+        }
+
+        private void AddNewAffixButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.AttributeHelper.AddNewAffix();
         }
     }
 }

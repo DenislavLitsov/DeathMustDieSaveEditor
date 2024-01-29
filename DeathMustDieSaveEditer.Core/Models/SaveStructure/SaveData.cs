@@ -116,10 +116,21 @@ namespace DeathMustDieSaveEditor.Core.Models.SaveStructure
 
         public IEnumerable<Item> GetEquippedItems(string charecterCode)
         {
-            var charEquipped = this.InventoryData.Where(x=>x.CharacterCode ==  charecterCode).FirstOrDefault();
+            var charEquipped = this.InventoryData.Where(x => x.CharacterCode == charecterCode).FirstOrDefault();
 
             var res = JsonConvert.DeserializeObject<EquipmentStateWrapper>(charEquipped.Json);
             return res.EquipmentState.Items;
+        }
+
+        public void SetEquippedItems(string charecterCode, IEnumerable<Item> items)
+        {
+            var charEquipped = this.InventoryData.Where(x => x.CharacterCode == charecterCode).FirstOrDefault();
+
+            var res = JsonConvert.DeserializeObject<EquipmentStateWrapper>(charEquipped.Json);
+            res.EquipmentState.Items = items.ToList();
+
+            var serializedEquippment = JsonConvert.SerializeObject(res);
+            charEquipped.Json = serializedEquippment;
         }
     }
 }
