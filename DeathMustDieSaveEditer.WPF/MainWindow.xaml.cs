@@ -59,7 +59,10 @@ namespace DeathMustDieSaveEditor.WPF
             //string loadedFilePath = this.DataManager.LoadTestSave();
             string loadedFilePath = this.DataManager.TryLoadSaveAlone();
             if (string.IsNullOrEmpty(loadedFilePath))
+            {
+                this.LoadedFileNameLabel.Content = "No save found. Please click the button to load a save from custom location";
                 return;
+            }
 
             var fileName = System.IO.Path.GetFileName(loadedFilePath);
             this.LoadedFileNameLabel.Content = fileName;
