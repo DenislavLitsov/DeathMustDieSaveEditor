@@ -163,6 +163,9 @@ namespace DeathMustDieSaveEditor.WPF
             if (this.DataManager.IsHeroUnlocked(this.SelectedClass))
             {
                 this.IsHeroUnlocked = true;
+                if (this.AttributeHelper is not null)
+                    this.AttributeHelper.DeleteAllAttributeLines();
+
                 this.LoadEquipment();
             }
             else
@@ -192,6 +195,7 @@ namespace DeathMustDieSaveEditor.WPF
             }
             else
             {
+                this.AttributeHelper.DeleteAllAttributeLines();
                 this.ItemTypeNameLabel.Content = "No item is equipped there";
             }
         }

@@ -303,6 +303,12 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
 
             this.ItemChanged(this, null);
         }
+        
+        public void DeleteAllAttributeLines()
+        {
+            this.grid.Children.RemoveRange(2, AttributeCount * 3);
+            AttributeCount = 0;
+        }
 
         private void CreateNewAttributeLine(string affixCode, string textBoxValue)
         {
@@ -349,12 +355,6 @@ namespace DeathMustDieSaveEditor.WPF.Helpers
             this.grid.Children.Add(txtb);
             this.grid.Children.Add(btn);
             this.AttributeCount++;
-        }
-
-        private void DeleteAllAttributeLines()
-        {
-            this.grid.Children.RemoveRange(2, AttributeCount * 3);
-            AttributeCount = 0;
         }
 
         private void DeleteAttributeLine(int lineNumber)
