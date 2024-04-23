@@ -10,17 +10,28 @@ namespace DeathMustDieGameCheat
 {
     internal class Program
     {
-        const string fileLoc = "C:\\Users\\denis\\AppData\\LocalLow\\Realm Archive\\Death Must Die\\Saves\\Slot_0.sav";
+        const string fileLoc = @"C:\Users\denis\AppData\LocalLow\Realm Archive\Death Must Die\Saves\Slot_0.sav";
+
+        static readonly string[] classes = ["Knight", "Sorceress", "Assassin", "Barbarian", "Warrior", "Ranger"];
+
         static void Main(string[] args)
         {
             DataManager dataManager = new DataManager();
+            //var data = dataManager.GetParsedSaveJson();
+            //Console.WriteLine(data);
             dataManager.TryLoadSaveAlone();
 
-            Console.WriteLine(dataManager.GetGold());
-            dataManager.SetGold(99999);
-            Console.WriteLine(dataManager.GetGold());
+            var items = dataManager.GetItems(classes.Last());
+            items.ToList().ForEach(item =>
+            {
+                Console.WriteLine(item);
+            });
 
-            dataManager.SaveChanges();
+            //Console.WriteLine(dataManager.GetGold());
+            //dataManager.SetGold(99999);
+            //Console.WriteLine(dataManager.GetGold());
+            //
+            //dataManager.SaveChanges();
 
             //dataManager.
             //LoadSave();

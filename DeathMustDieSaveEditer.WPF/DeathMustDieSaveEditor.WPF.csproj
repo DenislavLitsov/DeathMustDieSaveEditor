@@ -14,6 +14,7 @@
     <None Remove="ItemSelection.png" />
     <None Remove="Kront.png" />
     <None Remove="Nixi.png" />
+    <None Remove="Resources\Assets\Lorien.png" />
     <None Remove="Skadi.png" />
     <None Remove="Witch.png" />
   </ItemGroup>
@@ -40,6 +41,12 @@
     </Content>
     <Content Include="Resources\Assets\Witch.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Assets\Lorien.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

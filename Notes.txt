@@ -1,0 +1,4 @@
+How to find the CSV with the item affixes:Death Must Die\Death Must Die_Data\sharedassets0.assets.
+Open with vs code and control+f for Items_AffixesBoons.
+The list ends at the next red NULL NULL NULL.
+Copy it into csv and done

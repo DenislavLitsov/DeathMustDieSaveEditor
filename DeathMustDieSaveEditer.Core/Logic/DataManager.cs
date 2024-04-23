@@ -47,6 +47,13 @@ namespace DeathMustDieSaveEditor.Core.Logic
             return savePath;
         }
 
+        public string GetParsedSaveJson()
+        {
+            this.TryLoadSaveAlone();
+            var progression = this.SaveData.serializedSaveData.GetNotParsedProgression();
+            return progression;
+        }
+
         public void LoadSave(string savePath)
         {
             this.SavePath = savePath;

@@ -30,7 +30,7 @@ namespace DeathMustDieSaveEditor.WPF
 
         private bool AreComponentsLoaded = false;
 
-        private string[] HeroNames = ["Avoron", "Kront", "Merris", "Nixi", "Skadi"];
+        private string[] HeroNames = ["Avoron", "Kront", "Merris", "Nixi", "Skadi", "Lorien"];
 
         private string SelectedClass = "Knight";
 
@@ -155,6 +155,10 @@ namespace DeathMustDieSaveEditor.WPF
                 case 4:
                     this.SelectedClass = "Warrior";
                     this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Resources/Assets/Skadi.png", UriKind.Relative));
+                    break;
+                case 5:
+                    this.SelectedClass = "Ranger";
+                    this.HeroAvatarImg.Source = new BitmapImage(new Uri(@"/Resources/Assets/Lorien.png", UriKind.Relative));
                     break;
                 default:
                     break;

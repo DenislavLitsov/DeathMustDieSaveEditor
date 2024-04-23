@@ -16,6 +16,12 @@ namespace DeathMustDieSaveEditor.Core.Models.SaveStructure
             return res;
         }
 
+        public string GetNotParsedProgression()
+        {
+            string prog = values[0];
+            return prog;
+        }
+
         public void SaveProgression(Progression progression)
         {
             var serializedProgression = JsonConvert.SerializeObject(progression);
