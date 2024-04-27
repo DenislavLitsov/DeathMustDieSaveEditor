@@ -111,6 +111,7 @@ namespace DeathMustDieSaveEditor.Core.Models.SaveStructure
         public string ProgressionJson { get; set; }
         public string DarknessJson { get; set; }
         public string AchievementsJson { get; set; }
+        public string TalentsJson { get; set; }
         public string UnlocksJson { get; set; }
         public IList<InventoryData> InventoryData { get; set; }
         public string ShopJson { get; set; }
